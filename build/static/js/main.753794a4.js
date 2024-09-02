@@ -1,0 +1,2 @@
+document.addEventListener("DOMContentLoaded",(()=>{const e=document.getElementById("app");e&&(e.innerHTML='<h1 class="text-3xl font-bold underline">Hello World from SvenCode.run.place!</h1>')}));
+//# sourceMappingURL=main.753794a4.js.map
