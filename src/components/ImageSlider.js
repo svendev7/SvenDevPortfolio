@@ -51,11 +51,11 @@ const ImageSlider = () => {
             if (sliderState.mouseDownAt === 0) return;
 
             const mouseDelta = sliderState.mouseDownAt - clientX;
-            const maxDelta = window.innerWidth / 2;
+            const maxDelta = window.innerWidth / 0.8;
 
             const percentage = (mouseDelta / maxDelta) * -100;
             const nextPercentageUnconstrained = sliderState.prevPercentage + percentage;
-            const nextPercentage = Math.max(Math.min(nextPercentageUnconstrained, 0), -100);
+            const nextPercentage = Math.max(Math.min(nextPercentageUnconstrained, 0), -95);
 
             setSliderState(prev => ({
                 ...prev,
@@ -63,24 +63,31 @@ const ImageSlider = () => {
             }));
 
             if (track) {
-                track.animate(
-                    {
-                        transform: `translate(${nextPercentage}%, -50%)`
-                    },
-                    { duration: 1200, fill: 'forwards' }
-                );
-
-                const images = track.getElementsByClassName("image");
-                Array.from(images).forEach((image) => {
-                    image.animate(
+                requestAnimationFrame(() => {
+                    track.animate(
                         {
-                            objectPosition: `${100 + nextPercentage}% center`
+                            transform: `translate(${nextPercentage}%, -50%)`
                         },
                         { 
-                            duration: 1200, 
-                            fill: 'forwards' 
+                            duration: 600, 
+                            fill: 'forwards',
+                            easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)' 
                         }
                     );
+
+                    const images = track.getElementsByClassName("image");
+                    Array.from(images).forEach((image) => {
+                        image.animate(
+                            {
+                                objectPosition: `${100 + nextPercentage * 1.1}% center`
+                            },
+                            { 
+                                duration: 600, 
+                                fill: 'forwards',
+                                easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)'
+                            }
+                        );
+                    });
                 });
             }
         };
@@ -137,7 +144,7 @@ const ImageSlider = () => {
         setIsFullScreen(true);
     };
 
-    const images = Array.from({ length: 10 }, (_, index) => `/images/${index + 1}.jpg`);
+    const images = Array.from({ length: 7 }, (_, index) => `/images/${index + 1}.jpg`);
 
     return (
         <LayoutGroup>

@@ -10,11 +10,12 @@ body {
   display: flex;
   gap: 4vmin;
   position: absolute;
-  left: 50%;
+  left: 40%;
   top: 50%;
   transform: translate(0%, -50%);
   user-select: none;
   will-change: transform;
+  transition: transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 #image-track > .image {
@@ -23,6 +24,7 @@ body {
   object-fit: cover;
   object-position: 100% center;
   cursor: pointer;
+  transition: object-position 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .image-container {
