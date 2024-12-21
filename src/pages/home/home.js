@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ImageSlider from '../../components/ImageSlider'; 
+import ImageSlider from '../../components/ImageSlider/ImageSlider'; 
 const Home = () => {
     const [isFullScreen, setIsFullScreen] = useState(false);
     const [selectedImage, setSelectedImage] = useState('');

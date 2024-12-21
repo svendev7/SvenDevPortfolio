@@ -1,0 +1,50 @@
+body {
+  height: 100vh;
+  width: 100vw;
+  background-color: black;
+  margin: 0;
+  overflow: hidden;
+}
+
+#image-track {
+  display: flex;
+  gap: 4vmin;
+  position: absolute;
+  left: 40%;
+  top: 50%;
+  transform: translate(0%, -50%);
+  user-select: none;
+  will-change: transform;
+  transition: transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+#image-track > .image {
+  width: 40vmin;
+  height: 56vmin;
+  object-fit: cover;
+  object-position: 100% center;
+  cursor: pointer;
+  transition: object-position 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.image-container {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+}
+
+.image-container .hover-text {
+  position: absolute;
+  bottom: -4vmin;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 40px;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.image-container:hover .hover-text {
+  opacity: 1;
+}
