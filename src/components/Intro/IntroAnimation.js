@@ -9,27 +9,27 @@ const IntroAnimation = ({ onAnimationEnd }) => {
     const [animationFinished, setAnimationFinished] = useState(false);  // New state to track animation end
   
     useEffect(() => {
-      const preloadImages = () => {
-        const images = document.querySelectorAll('img');
-        return Promise.all(
-          Array.from(images).map((img) =>
-            new Promise((resolve) => {
-              if (img.complete) {
-                resolve();
-              } else {
-                img.onload = resolve;
-                img.onerror = resolve;
-              }
-            })
-          )
-        );
-      };
+        const preloadImages = () => {
+          const images = document.querySelectorAll('img');
+          return Promise.all(
+            Array.from(images).map((img) =>
+              new Promise((resolve) => {
+                if (img.complete) {
+                  resolve();
+                } else {
+                  img.onload = resolve;
+                  img.onerror = resolve;
+                }
+              })
+            )
+          );
+        };
 
       preloadImages().then(() => {
         // Set loading to false and fade out loader
         gsap.to(".loader", {
           opacity: 0,
-          duration: 1,
+          duration: 0,
           onComplete: () => {
             setIsLoading(false);
             
@@ -78,23 +78,23 @@ const IntroAnimation = ({ onAnimationEnd }) => {
             }, "-=4");
 
             tl.to(".container", {
-              scale: 6,
-              duration: 4,
-              ease: "power4.inOut"
+              scale: 5.19,
+              duration: 3.5,
+              ease: "power3.inOut"
             }, "-=2");
 
-            tl.to(".nav-item a, .title p, .slide-num p, .preview img", {
-              top: 0,
-              stagger: 0.075,
-              duration: 1,
-              ease: "power3.out"
-            }, "-=1.5");
+            // tl.to(".nav-item a, .title p, .slide-num p, .preview img", {
+            //   top: 0,
+            //   stagger: 0.075,
+            //   duration: 1,
+            //   ease: "power3.out"
+            // }, "-=1.5");
 
-            tl.to(".icon ion-icon, .icon-2 ion-icon", {
-              scale: 1,
-              stagger: 0.05,
-              ease: "power3.out"
-            }, "-=1");
+            // tl.to(".icon ion-icon, .icon-2 ion-icon", {
+            //   scale: 1,
+            //   stagger: 0.05,
+            //   ease: "power3.out"
+            // }, "-=1");
 
             // Set animationFinished to true after animation ends
             tl.eventCallback("onComplete", () => {
@@ -105,8 +105,9 @@ const IntroAnimation = ({ onAnimationEnd }) => {
       });
     }, []);
 
+
     if (animationFinished) {
-      return <ImageSlider />;  // Render the ImageSlider component when animation finishes
+        return <ImageSlider startFullScreen={true} initialImage="/images/1.jpg" />;
     }
 
     return (
@@ -155,7 +156,7 @@ const IntroAnimation = ({ onAnimationEnd }) => {
             <div className="item"><img src="/images/10.jpg" alt="" /></div>
           </div>
           </div>
-          <div className="content">
+          {/* <div className="content">
             <nav>
               <div className="nav-item">
                 <a href="#" id="active">Projects</a>
@@ -169,15 +170,10 @@ const IntroAnimation = ({ onAnimationEnd }) => {
               <div className="title"><p>Svens Portfolio</p></div>
               <div className="icon-2"><ion-icon name="add-sharp"></ion-icon></div>
             </div>
-            {/* <footer>
-            <div className="preview">
-              {[1, 2, 3, 4, 5, 6, 7].map((num) => (
-                <img key={num} src={`/images/${num}.jpg`} alt="" />
-              ))}
-            </div>
+            <footer>
             <div className="slide-num"><p>1 &mdash; 3</p></div>
-          </footer> */}
-          </div>
+          </footer>
+          </div> */}
         </div>
       </div>
     );

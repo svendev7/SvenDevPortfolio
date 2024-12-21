@@ -1,14 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
-import '../ImageSlider/ImageSliderStyles.css';
+import './ImageSliderStyles.css';
 
-const ImageSlider = () => {
+const ImageSlider = ({ startFullScreen = false, initialImage = null }) => {
     const trackRef = useRef(null);
-    const [isFullScreen, setIsFullScreen] = useState(false);
-    const [selectedImage, setSelectedImage] = useState(null);
+    const [isFullScreen, setIsFullScreen] = useState(startFullScreen);
+    const [selectedImage, setSelectedImage] = useState(initialImage);
     const [selectedIndex, setSelectedIndex] = useState(null);
+    const [opacityDelayed, setOpacityDelayed] = useState(true);
     const [imageTransitionState, setImageTransitionState] = useState({
-        rect: null,
+        rect: startFullScreen ? {
+            top: 0,
+            left: 0,
+            width: window.innerWidth,
+            height: window.innerHeight
+        } : null,
         objectPosition: '100% center',
         scale: 1
     });
@@ -18,7 +24,25 @@ const ImageSlider = () => {
         prevPercentage: 0,
         percentage: 0
     });
-
+    const imageRefs = useRef([]);
+    useEffect(() => {
+        if (!isFullScreen) {
+            const timer = setTimeout(() => {
+                setOpacityDelayed(false); // After half a second, trigger opacity change
+            }, 1000);
+            return () => clearTimeout(timer); // Cleanup timer on unmount or change
+        } else {
+            setOpacityDelayed(true); // Reset opacity state when exiting fullscreen
+        }
+    }, [isFullScreen]);
+    useEffect(() => {
+        setTimeout(() => {
+            if (imageRefs.current[0]) {
+                // Trigger click on the first image after a slight delay
+                imageRefs.current[0].click();
+            }
+        }, -200); // Adjust the delay as needed
+    }, []);
     useEffect(() => {
         const track = trackRef.current;
         if (!track) return;
@@ -62,34 +86,30 @@ const ImageSlider = () => {
                 percentage: nextPercentage
             }));
 
-            if (track) {
-                requestAnimationFrame(() => {
-                    track.animate(
-                        {
-                            transform: `translate(${nextPercentage}%, -50%)`
-                        },
-                        { 
-                            duration: 600, 
-                            fill: 'forwards',
-                            easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)' 
-                        }
-                    );
+            track.animate(
+                {
+                    transform: `translate(${nextPercentage}%, -50%)`
+                },
+                { 
+                    duration: 600, 
+                    fill: 'forwards',
+                    easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)' 
+                }
+            );
 
-                    const images = track.getElementsByClassName("image");
-                    Array.from(images).forEach((image) => {
-                        image.animate(
-                            {
-                                objectPosition: `${100 + nextPercentage * 1.1}% center`
-                            },
-                            { 
-                                duration: 600, 
-                                fill: 'forwards',
-                                easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)'
-                            }
-                        );
-                    });
-                });
-            }
+            const images = track.getElementsByClassName("image");
+            Array.from(images).forEach((image) => {
+                image.animate(
+                    {
+                        objectPosition: `${100 + nextPercentage * 1.1}% center`
+                    },
+                    { 
+                        duration: 600, 
+                        fill: 'forwards',
+                        easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)'
+                    }
+                );
+            });
         };
 
         window.addEventListener('mousedown', handleOnDown);
@@ -114,11 +134,10 @@ const ImageSlider = () => {
     const handleImageClick = (e, src, index) => {
         // If already in full screen and clicking the same image, close it
         if (isFullScreen && selectedImage === src) {
-            setIsFullScreen(false);
-            setSelectedImage(null);
+            handleFullScreenClose(); // Move the closing logic to a dedicated function
             return;
         }
-
+    
         // Capture the exact state of the image at click
         const imgElement = e.target;
         const rect = imgElement.getBoundingClientRect();
@@ -126,7 +145,8 @@ const ImageSlider = () => {
         // Get computed style to capture exact object-position
         const computedStyle = window.getComputedStyle(imgElement);
         const objectPosition = computedStyle.objectPosition;
-
+    
+        // Set image transition state immediately
         setImageTransitionState({
             rect: {
                 top: rect.top,
@@ -135,13 +155,22 @@ const ImageSlider = () => {
                 height: rect.height
             },
             objectPosition,
-            scale: 1  // Matches the hover scale
+            scale: 1
         });
-
+    
         // Set full screen state
         setSelectedImage(src);
         setSelectedIndex(index);
-        setIsFullScreen(true);
+        setIsFullScreen(true); // This triggers the fullscreen mode
+    };
+
+    const handleFullScreenClose = () => {
+        setIsFullScreen(false);
+        setSelectedImage(null);
+        setImageTransitionState(prev => ({
+            ...prev,
+            rect: null
+        }));
     };
 
     const images = Array.from({ length: 7 }, (_, index) => `/images/${index + 1}.jpg`);
@@ -152,7 +181,9 @@ const ImageSlider = () => {
                 id="image-track" 
                 ref={trackRef} 
                 style={{ 
-                    transform: `translate(${sliderState.percentage}%, -50%)` 
+                    transform: `translate(${sliderState.percentage}%, -50%)`,
+                    opacity: isFullScreen ? 0 : 1,
+                    transition: 'opacity 0.4s ease-in-out'
                 }}
             >
                 {images.map((src, index) => (
@@ -164,11 +195,12 @@ const ImageSlider = () => {
                         alt={`Image ${index + 1}`}
                         draggable="false"
                         onClick={(e) => handleImageClick(e, src, index)}
-                        whileHover={{ scale: 1.05, duration: 2}}
+                        whileHover={{ scale: 1.05 }}
                         style={{
                             cursor: 'pointer',
-                            willChange: 'transform',
+                            willChange: 'transform'
                         }}
+                        ref={(el) => (imageRefs.current[index] = el)} // Assign ref dynamically
                     />
                 ))}
             </div>
@@ -203,9 +235,9 @@ const ImageSlider = () => {
                         }}
                         transition={{
                             duration: 0.4,
-                            type: "tween"
+                            ease: "easeInOut"
                         }}
-                        onClick={() => setIsFullScreen(false)}
+                        onClick={handleFullScreenClose}
                     >
                         <motion.img
                             src={selectedImage}
@@ -217,10 +249,12 @@ const ImageSlider = () => {
                                 transform: `scale(${imageTransitionState.scale})`,
                                 transformOrigin: 'center center'
                             }}
+                            alt="Full screen view"
                         />
                     </motion.div>
                 )}
             </AnimatePresence>
+            
         </LayoutGroup>
     );
 };
