@@ -24,6 +24,7 @@ body {
   object-fit: cover;
   object-position: 100% center;
   cursor: pointer;
+  border-radius: 1vmin;
   transition: object-position 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
@@ -33,19 +34,14 @@ body {
   text-align: center;
 }
 
-.image-container .hover-text {
-  position: absolute;
-  bottom: -4vmin;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 40px;
-  color: white;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
+.image-scrollbar {
+  cursor: default;
 }
 
-.image-container:hover .hover-text {
-  opacity: 1;
+/* Add responsive adjustments */
+@media (max-width: 768px) {
+  #image-track > .image {
+      width: 50vmin;
+      height: 70vmin;
+  }
 }
-

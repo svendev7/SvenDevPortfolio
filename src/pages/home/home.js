@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ImageSlider from '../../components/ImageSlider/ImageSlider';
-
+import Header from '../../components/Header/Header';
 const Home = () => {
     const [isFullScreen, setIsFullScreen] = useState(false);
     const [selectedImage, setSelectedImage] = useState('');

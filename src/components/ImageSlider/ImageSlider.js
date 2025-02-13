@@ -1,13 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import './ImageSliderStyles.css';
-
+import Header from '../../components/Header/Header';
 const ImageSlider = ({ startFullScreen = false, initialImage = null }) => {
     const trackRef = useRef(null);
+    const scrollbarRef = useRef(null);
     const [isFullScreen, setIsFullScreen] = useState(startFullScreen);
     const [selectedImage, setSelectedImage] = useState(initialImage);
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [opacityDelayed, setOpacityDelayed] = useState(true);
+    const [isDragging, setIsDragging] = useState(false);
+    const [isDraggingScrollbar, setIsDraggingScrollbar] = useState(false);
+    const scrollbarThumbRef = useRef(null);
+    const imageRefs = useRef([]);
+    
     const [imageTransitionState, setImageTransitionState] = useState({
         rect: startFullScreen ? {
             top: 0,
@@ -24,17 +30,47 @@ const ImageSlider = ({ startFullScreen = false, initialImage = null }) => {
         prevPercentage: 0,
         percentage: 0
     });
-    const imageRefs = useRef([]);
+
     useEffect(() => {
         if (!isFullScreen) {
             const timer = setTimeout(() => {
-                setOpacityDelayed(false); // After half a second, trigger opacity change
+                setOpacityDelayed(false);
             }, 1000);
-            return () => clearTimeout(timer); // Cleanup timer on unmount or change
+            return () => clearTimeout(timer);
         } else {
-            setOpacityDelayed(true); // Reset opacity state when exiting fullscreen
+            setOpacityDelayed(true);
         }
     }, [isFullScreen]);
+
+    const updateTrackPosition = (percentage) => {
+        const track = trackRef.current;
+        if (!track) return;
+
+        track.animate(
+            {
+                transform: `translate(${percentage}%, -50%)`
+            },
+            { 
+                duration: 600, 
+                fill: 'forwards',
+                easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)' 
+            }
+        );
+
+        const images = track.getElementsByClassName("image");
+        Array.from(images).forEach((image) => {
+            image.animate(
+                {
+                    objectPosition: `${100 + percentage * 1.1}% center`
+                },
+                { 
+                    duration: 600, 
+                    fill: 'forwards',
+                    easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)'
+                }
+            );
+        });
+    };
     useEffect(() => {
         setTimeout(() => {
             if (imageRefs.current[0]) {
@@ -48,17 +84,18 @@ const ImageSlider = ({ startFullScreen = false, initialImage = null }) => {
         if (!track) return;
 
         const handleOnDown = (e) => {
-            if (isFullScreen) return;
+            if (isFullScreen || isDraggingScrollbar) return;
             
             const clientX = e.clientX || (e.touches && e.touches[0]?.clientX);
             setSliderState(prev => ({
                 ...prev,
                 mouseDownAt: clientX
             }));
+            setIsDragging(false);
         };
 
         const handleOnUp = () => {
-            if (isFullScreen) return;
+            if (isFullScreen || isDraggingScrollbar) return;
             
             setSliderState(prev => ({
                 ...prev,
@@ -68,48 +105,26 @@ const ImageSlider = ({ startFullScreen = false, initialImage = null }) => {
         };
 
         const handleOnMove = (e) => {
-            if (isFullScreen) return;
+            if (isFullScreen || isDraggingScrollbar) return;
             
             const clientX = e.clientX || (e.touches && e.touches[0]?.clientX);
             
             if (sliderState.mouseDownAt === 0) return;
+            setIsDragging(true);
 
             const mouseDelta = sliderState.mouseDownAt - clientX;
             const maxDelta = window.innerWidth / 0.8;
 
             const percentage = (mouseDelta / maxDelta) * -100;
             const nextPercentageUnconstrained = sliderState.prevPercentage + percentage;
-            const nextPercentage = Math.max(Math.min(nextPercentageUnconstrained, 0), -95);
+            const nextPercentage = Math.max(Math.min(nextPercentageUnconstrained, 0), -90);
 
             setSliderState(prev => ({
                 ...prev,
                 percentage: nextPercentage
             }));
 
-            track.animate(
-                {
-                    transform: `translate(${nextPercentage}%, -50%)`
-                },
-                { 
-                    duration: 600, 
-                    fill: 'forwards',
-                    easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)' 
-                }
-            );
-
-            const images = track.getElementsByClassName("image");
-            Array.from(images).forEach((image) => {
-                image.animate(
-                    {
-                        objectPosition: `${100 + nextPercentage * 1.1}% center`
-                    },
-                    { 
-                        duration: 600, 
-                        fill: 'forwards',
-                        easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)'
-                    }
-                );
-            });
+            updateTrackPosition(nextPercentage);
         };
 
         window.addEventListener('mousedown', handleOnDown);
@@ -129,12 +144,69 @@ const ImageSlider = ({ startFullScreen = false, initialImage = null }) => {
             window.removeEventListener('touchmove', handleOnMove);
             window.removeEventListener('touchend', handleOnUp);
         };
-    }, [isFullScreen, sliderState]);
+    }, [isFullScreen, sliderState, isDraggingScrollbar]);
+
+    const handleScrollbarMouseDown = (e) => {
+        if (isFullScreen) return;
+        
+        setIsDraggingScrollbar(true);
+        const scrollbar = scrollbarRef.current;
+        const thumb = scrollbarThumbRef.current;
+        
+        if (!scrollbar || !thumb) return;
+
+        const scrollbarRect = scrollbar.getBoundingClientRect();
+        const clickPosition = (e.clientX - scrollbarRect.left) / scrollbarRect.width;
+        const percentage = Math.max(Math.min(clickPosition * -100, 0), -90);
+
+        setSliderState(prev => ({
+            ...prev,
+            percentage: percentage,
+            prevPercentage: percentage
+        }));
+
+        updateTrackPosition(percentage);
+    };
+
+    const handleScrollbarMouseMove = (e) => {
+        if (!isDraggingScrollbar || isFullScreen) return;
+
+        const scrollbar = scrollbarRef.current;
+        if (!scrollbar) return;
+
+        const scrollbarRect = scrollbar.getBoundingClientRect();
+        const position = (e.clientX - scrollbarRect.left) / scrollbarRect.width;
+        const percentage = Math.max(Math.min(position * -100, 0), -90);
+
+        setSliderState(prev => ({
+            ...prev,
+            percentage: percentage,
+            prevPercentage: percentage
+        }));
+
+        updateTrackPosition(percentage);
+    };
+
+    const handleScrollbarMouseUp = () => {
+        setIsDraggingScrollbar(false);
+    };
+
+    useEffect(() => {
+        window.addEventListener('mousemove', handleScrollbarMouseMove);
+        window.addEventListener('mouseup', handleScrollbarMouseUp);
+
+        return () => {
+            window.removeEventListener('mousemove', handleScrollbarMouseMove);
+            window.removeEventListener('mouseup', handleScrollbarMouseUp);
+        };
+    }, [isDraggingScrollbar]);
 
     const handleImageClick = (e, src, index) => {
+        if (isDragging) return;
+        
         // If already in full screen and clicking the same image, close it
         if (isFullScreen && selectedImage === src) {
-            handleFullScreenClose(); // Move the closing logic to a dedicated function
+            handleFullScreenClose();
             return;
         }
     
@@ -161,7 +233,7 @@ const ImageSlider = ({ startFullScreen = false, initialImage = null }) => {
         // Set full screen state
         setSelectedImage(src);
         setSelectedIndex(index);
-        setIsFullScreen(true); // This triggers the fullscreen mode
+        setIsFullScreen(true);
     };
 
     const handleFullScreenClose = () => {
@@ -177,6 +249,7 @@ const ImageSlider = ({ startFullScreen = false, initialImage = null }) => {
 
     return (
         <LayoutGroup>
+            <Header />
             <div 
                 id="image-track" 
                 ref={trackRef} 
@@ -200,9 +273,42 @@ const ImageSlider = ({ startFullScreen = false, initialImage = null }) => {
                             cursor: 'pointer',
                             willChange: 'transform'
                         }}
-                        ref={(el) => (imageRefs.current[index] = el)} // Assign ref dynamically
+                        ref={(el) => (imageRefs.current[index] = el)}
                     />
                 ))}
+            </div>
+
+            <div 
+                className="image-scrollbar" 
+                ref={scrollbarRef}
+                onMouseDown={handleScrollbarMouseDown}
+                style={{
+                    position: 'fixed',
+                    bottom: '20px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: '50%',
+                    height: '4px',
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    cursor: 'pointer',
+                    borderRadius: '2px',
+                    opacity: isFullScreen ? 0 : 1,
+                    transition: 'opacity 0.4s ease-in-out'
+                }}
+            >
+                <div
+                    ref={scrollbarThumbRef}
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: `${Math.abs(sliderState.percentage)}%`,
+                        width: '10%',
+                        height: '100%',
+                        backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                        borderRadius: '2px',
+                        cursor: 'pointer'
+                    }}
+                />
             </div>
 
             <AnimatePresence>
@@ -254,7 +360,6 @@ const ImageSlider = ({ startFullScreen = false, initialImage = null }) => {
                     </motion.div>
                 )}
             </AnimatePresence>
-            
         </LayoutGroup>
     );
 };
