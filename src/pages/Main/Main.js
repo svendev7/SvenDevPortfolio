@@ -33,8 +33,7 @@ const Main = () => {
             transition={{ duration: 0.3 }}
           >
             <ProjectsSlider 
-              startFullScreen={fromIntro} 
-              initialImage={sessionStorage.getItem('projectsSelectedImage')}
+              startFullScreen={fromIntro} initialImage="/images/1.jpg" 
             />
           </motion.div>
         )}

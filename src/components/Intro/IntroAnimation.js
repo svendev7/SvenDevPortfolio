@@ -90,7 +90,9 @@ const IntroAnimation = ({ onAnimationEnd }) => {
         });
       });
     }, []);
-
+    if (animationFinished) {
+      return <ImageSlider startFullScreen={true} initialImage="/images/1.jpg" />;
+  }
 
     return (
       <div className="main-container">

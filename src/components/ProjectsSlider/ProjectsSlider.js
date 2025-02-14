@@ -16,6 +16,7 @@ const ProjectsSlider = ({ startFullScreen = false, initialImage = null }) => {
     const scrollbarThumbRef = useRef(null);
     const [isExiting, setIsExiting] = useState(false);
     const imageRefs = useRef([]);
+    
     const [showBackButton, setShowBackButton] = useState(true);
     const fullscreenRef = useRef(null);
     // need to make it so u only go fullscreen after intro, not when switching from about to projects
