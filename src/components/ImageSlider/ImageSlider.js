@@ -5,6 +5,7 @@ import Header from '../../components/Header/Header';
 const ImageSlider = ({ startFullScreen = false, initialImage = null }) => {
     const trackRef = useRef(null);
     const scrollbarRef = useRef(null);
+    const [isScrollVisible, setIsScrollVisible] = useState(true);
     const [isFullScreen, setIsFullScreen] = useState(startFullScreen);
     const [selectedImage, setSelectedImage] = useState(initialImage);
     const [selectedIndex, setSelectedIndex] = useState(null);
@@ -12,8 +13,11 @@ const ImageSlider = ({ startFullScreen = false, initialImage = null }) => {
     const [isDragging, setIsDragging] = useState(false);
     const [isDraggingScrollbar, setIsDraggingScrollbar] = useState(false);
     const scrollbarThumbRef = useRef(null);
+    const [isExiting, setIsExiting] = useState(false);
     const imageRefs = useRef([]);
-    
+    const [showBackButton, setShowBackButton] = useState(true);
+    const fullscreenRef = useRef(null);
+    // need to make it so u only go fullscreen after intro, not when switching from about to projects
     const [imageTransitionState, setImageTransitionState] = useState({
         rect: startFullScreen ? {
             top: 0,
@@ -24,13 +28,33 @@ const ImageSlider = ({ startFullScreen = false, initialImage = null }) => {
         objectPosition: '100% center',
         scale: 1
     });
+    const handleFullscreenScroll = (e) => {
+        const scrollTop = e.target.scrollTop;
+        setShowBackButton(scrollTop === 0);
+    };
 
+    useEffect(() => {
+        if (isFullScreen && fullscreenRef.current) {
+            fullscreenRef.current.scrollTo(0, 0);
+            setShowBackButton(true);
+        }
+    }, [selectedImage, isFullScreen]);
     const [sliderState, setSliderState] = useState({
         mouseDownAt: 0,
         prevPercentage: 0,
         percentage: 0
     });
-
+    const navigate = (direction) => {
+        const newPercentage = sliderState.percentage + (direction === 'left' ? 10 : -10);
+        const clamped = Math.max(Math.min(newPercentage, 0), -90);
+        
+        setSliderState(prev => ({
+            ...prev,
+            percentage: clamped,
+            prevPercentage: clamped
+        }));
+        updateTrackPosition(clamped);
+    };
     useEffect(() => {
         if (!isFullScreen) {
             const timer = setTimeout(() => {
@@ -204,17 +228,15 @@ const ImageSlider = ({ startFullScreen = false, initialImage = null }) => {
     const handleImageClick = (e, src, index) => {
         if (isDragging) return;
         
-        // If already in full screen and clicking the same image, close it
-        if (isFullScreen && selectedImage === src) {
-            handleFullScreenClose();
-            return;
-        }
-    
-        // Capture the exact state of the image at click
+        // // If already in full screen and clicking the same image, close it
+        // if (isFullScreen && selectedImage === src) {
+        //     setIsTextExpanded(!isTextExpanded);
+        //     handleFullScreenClose();
+        //     return;
+        // }
+        setIsScrollVisible(true);
         const imgElement = e.target;
         const rect = imgElement.getBoundingClientRect();
-        
-        // Get computed style to capture exact object-position
         const computedStyle = window.getComputedStyle(imgElement);
         const objectPosition = computedStyle.objectPosition;
     
@@ -237,6 +259,7 @@ const ImageSlider = ({ startFullScreen = false, initialImage = null }) => {
     };
 
     const handleFullScreenClose = () => {
+        setIsScrollVisible(false)
         setIsFullScreen(false);
         setSelectedImage(null);
         setImageTransitionState(prev => ({
@@ -250,6 +273,17 @@ const ImageSlider = ({ startFullScreen = false, initialImage = null }) => {
     return (
         <LayoutGroup>
             <Header />
+            {isFullScreen && (
+                <motion.div
+                    initial={{ x: 100, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ x: 100, opacity: 0 }}
+                    className="back-text"
+                    onClick={handleFullScreenClose}
+                >
+                    Back
+                </motion.div>
+            )}
             <div 
                 id="image-track" 
                 ref={trackRef} 
@@ -314,6 +348,7 @@ const ImageSlider = ({ startFullScreen = false, initialImage = null }) => {
             <AnimatePresence>
                 {isFullScreen && imageTransitionState.rect && (
                     <motion.div
+                        ref={fullscreenRef}
                         initial={{
                             position: 'fixed',
                             top: imageTransitionState.rect.top,
@@ -330,21 +365,55 @@ const ImageSlider = ({ startFullScreen = false, initialImage = null }) => {
                             left: 0,
                             width: '100vw',
                             height: '100vh',
-                            scale: 1
+                            scale: 1,
+                            overflowY: isScrollVisible ? 'auto' : 'hidden'
                         }}
                         exit={{
                             top: imageTransitionState.rect.top,
                             left: imageTransitionState.rect.left,
                             width: imageTransitionState.rect.width,
                             height: imageTransitionState.rect.height,
-                            scale: imageTransitionState.scale
+                            scale: imageTransitionState.scale,
+                            overflow: 'hidden'
                         }}
                         transition={{
                             duration: 0.4,
                             ease: "easeInOut"
                         }}
-                        onClick={handleFullScreenClose}
+                        className="custom-scrollbar"
+                        onScroll={handleFullscreenScroll}
                     >
+                        <motion.div isFullScreen={true}
+                            initial={{ y: -50, opacity: 0 }} // Animation to bring header from above
+                            animate={{ y: 0, opacity: 1 }}   // Set final position
+                            exit={{ y: -50, opacity: 0 }}    // Exit animation
+                            transition={{ duration: 0 }}
+                            style={{ 
+                                position: 'absolute', 
+                                top: 0, 
+                                left: 0, 
+                                right: 0, 
+                                zIndex: 1, 
+                                '--text-outline-color': 'black'  // Define the custom CSS property
+                              }}
+                        >
+                            <Header isFullScreen={true}/>
+                        </motion.div>
+                                                    
+                        <AnimatePresence>
+                            {showBackButton && ( // back doesnt dissapear
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: 20 }}
+                                    className="back-text"
+                                    onClick={handleFullScreenClose}
+                                >
+                                    Back
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
                         <motion.img
                             src={selectedImage}
                             style={{
@@ -353,10 +422,26 @@ const ImageSlider = ({ startFullScreen = false, initialImage = null }) => {
                                 objectFit: 'cover',
                                 objectPosition: imageTransitionState.objectPosition,
                                 transform: `scale(${imageTransitionState.scale})`,
-                                transformOrigin: 'center center'
+                                transformOrigin: 'center center',
+                                pointerEvents: 'none'
+                                
                             }}
                             alt="Full screen view"
                         />
+                         <div className="text-content">
+                            <h2>About This Image</h2>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                                Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                {/* Add more content to enable scrolling */}
+                                {Array(20).fill().map((_, i) => (
+                                    <React.Fragment key={i}>
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                                        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br />
+                                    </React.Fragment>
+                                ))}
+                            </p>
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>
