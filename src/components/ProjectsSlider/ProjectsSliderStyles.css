@@ -38,7 +38,7 @@ body {
   width: 40vmin;
   height: 56vmin;
   object-fit: cover;
-  object-position: 50% center; /* Changed from 100% to 50% */
+  object-position: 50% center; 
   cursor: pointer;
   border-radius: 1vmin;
   transform-origin: center right;
@@ -57,7 +57,7 @@ body {
 .project-details {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 50px; /* gap between left and right halves */
+  gap: 50px; 
   padding: 40px 50px;
   background: rgba(0, 0, 0, 0.7);
   box-sizing: border-box;
@@ -91,7 +91,7 @@ body {
   height: auto;
   object-fit: cover;
   border-radius: 8px;
-  margin-bottom: 10px; /* ensures a gap between the image and the tech icons */
+  margin-bottom: 10px; 
 }
 .left-column .tech-icons {
   display: flex;
@@ -111,7 +111,7 @@ body {
   justify-content: space-between;
   color: var(--text-secondary);
   font-family: Arial, Helvetica, sans-serif;
-  height: 500px; /* match left column height for alignment */
+  height: 500px; 
 }
 .right-column h2 {
   font-size: 2rem;
@@ -126,7 +126,7 @@ body {
 .info-footer {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end; /* Align items by their bottom edge */
+  align-items: flex-end; 
   margin-top: auto;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;

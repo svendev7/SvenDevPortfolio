@@ -3,144 +3,7 @@ import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import './ProjectsSliderStyles.css';
 import { ArrowRight, ArrowLeft, Code, Zap, Monitor, Layout } from 'lucide-react';
 import { SiTypescript, SiJavascript, SiReact, SiNextdotjs, SiGithub } from 'react-icons/si';
-
-const projects = [
-    {
-      sliderImage: "/images/FTA.jpg",
-      projectImage: "/images/GrootsDesignGif.mp4",
-      title: "Groots Design",
-      description: "Detailed info about Project Grootsdesign goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      techIcons: [
-        <SiTypescript key="ts" size={40} title="TypeScript" className="tech-icon" />,
-        <SiJavascript key="js" size={40} title="JavaScript"  className="tech-icon" />,
-        <SiReact key="react" size={40} title="React"  className="tech-icon" />,
-        <SiNextdotjs key="next" size={40} title="Next.js"  className="tech-icon" />,
-      ],
-      visitUrl: "https://github.com/FTA",
-      completed: "Completed: January 2024"
-    },
-    {
-      sliderImage: "/images/GrootsDesign.jpg",
-      projectImage: "/images/ipass2.mp4",
-      title: "Farming The Apocalypse",
-      description: "Description for fta project goes here. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      techIcons: [
-        <SiJavascript key="js" size={40} title="JavaScript"  className="tech-icon" />,
-        <SiReact key="react" size={40} title="React"  className="tech-icon" />,
-      ],
-      visitUrl: "https://grootsdesign.com",
-      completed: "Completed: March 2024"
-    },
-    {
-        sliderImage: "/images/Remembr.jpg",
-        projectImage: "/images/RemembrGif.mp4",
-        title: "Remembr",
-        description: "Description for Remembr project goes here. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        techIcons: [
-          <SiJavascript key="js" size={40} title="JavaScript" className="tech-icon" />,
-          <SiReact key="react" size={40} title="React"  className="tech-icon" />,
-        ],
-        visitUrl: "https://grootsdesign.com",
-        completed: "Completed: March 2024"
-    },
-    {
-        sliderImage: "/images/ipass.jpg",
-        projectImage: "/images/ipass2.jpg",
-        title: "Individual propedeuse assessment",
-        description: "Description for IPASS project goes here. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        techIcons: [
-          <SiJavascript key="js" size={40} title="JavaScript"  className="tech-icon" />,
-          <SiReact key="react" size={40} title="React"  className="tech-icon" />,
-        ],
-        visitUrl: "https://grootsdesign.com",
-        completed: "Completed: March 2024"
-    },
-    {
-        sliderImage: "/images/Lingo.jpg",
-        projectImage: "/images/Lingo2.jpg",
-        title: "Groots Design",
-        description: "Description for Groots Design project goes here. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        techIcons: [
-          <SiJavascript key="js" size={40} title="JavaScript"  className="tech-icon" />,
-          <SiReact key="react" size={40} title="React"  className="tech-icon" />,
-        ],
-        visitUrl: "https://grootsdesign.com",
-        completed: "Completed: March 2024"
-    },
-    {
-        sliderImage: "/images/Blackjack.jpg",
-        projectImage: "/images/Blackjack.jpg",
-        title: "Groots Design",
-        description: "Description for Groots Design project goes here. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        techIcons: [
-          <SiJavascript key="js" size={40} title="JavaScript"  className="tech-icon" />,
-          <SiReact key="react" size={40} title="React"  className="tech-icon" />,
-        ],
-        visitUrl: "https://grootsdesign.com",
-        completed: "Completed: March 2024"
-    },
-    {
-        sliderImage: "/images/KPN.jpg",
-        projectImage: "/images/KPN.jpg",
-        title: "Groots Design",
-        description: "Description for Groots Design project goes here. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        techIcons: [
-          <SiJavascript key="js" size={40} title="JavaScript"  className="tech-icon" />,
-          <SiReact key="react" size={40} title="React"  className="tech-icon" />,
-        ],
-        visitUrl: "https://grootsdesign.com",
-        completed: "Completed: March 2024"
-    },
-    {
-        sliderImage: "/images/WeatherApp.jpg",
-        projectImage: "/images/WeatherApp.jpg",
-        title: "Groots Design",
-        description: "Description for Groots Design project goes here. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        techIcons: [
-          <SiJavascript key="js" size={40} title="JavaScript"  className="tech-icon" />,
-          <SiReact key="react" size={40} title="React"  className="tech-icon" />,
-        ],
-        visitUrl: "https://grootsdesign.com",
-        completed: "Completed: March 2024"
-    },
-    {
-        sliderImage: "/images/ComingSoon.jpg",
-        projectImage: "/images/GrootsDesign_project.jpg",
-        title: "Groots Design",
-        description: "Description for Groots Design project goes here. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        techIcons: [
-          <SiJavascript key="js" size={40} title="JavaScript"  className="tech-icon" />,
-          <SiReact key="react" size={40} title="React"  className="tech-icon" />,
-        ],
-        visitUrl: "https://grootsdesign.com",
-        completed: "Completed: March 2024"
-    },
-    {
-        sliderImage: "/images/ComingSoon.jpg",
-        projectImage: "/images/GrootsDesign_project.jpg",
-        title: "Groots Design",
-        description: "Description for Groots Design project goes here. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        techIcons: [
-          <SiJavascript key="js" size={40} title="JavaScript"  className="tech-icon" />,
-          <SiReact key="react" size={40} title="React" className="tech-icon" />,
-        ],
-        visitUrl: "https://grootsdesign.com",
-        completed: "Completed: March 2024"
-    },
-    {
-        sliderImage: "/images/ComingSoon.jpg",
-        projectImage: "/images/GrootsDesign_project.jpg",
-        title: "Groots Design",
-        description: "Description for Groots Design project goes here. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        techIcons: [
-          <SiJavascript key="js" size={40} title="JavaScript"  className="tech-icon" />,
-          <SiReact key="react" size={40} title="React"  className="tech-icon" />,
-        ],
-        visitUrl: "https://grootsdesign.com",
-        completed: "Completed: March 2024"
-    },
-      
-  ];
+import projects from './ProjectsData';
 const ProjectsSlider = ({ startFullScreen = false,  initialImage = null  }) => {
     const trackRef = useRef(null);
     const scrollbarRef = useRef(null);
@@ -430,7 +293,7 @@ const ProjectsSlider = ({ startFullScreen = false,  initialImage = null  }) => {
                     });
                 }
                 initialLoadRef.current = false;
-            }, 50); 
+            },500); 
         }
     }, [startFullScreen, projects]);
     return (

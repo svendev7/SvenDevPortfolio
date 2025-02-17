@@ -9,7 +9,7 @@ const Main = () => {
   const location = useLocation();
   const isAbout = location.pathname === "/about";
   const fromIntro = location.state?.fromIntro || false;
-  const [isAnimating, setIsAnimating] = useState(isAbout); // Lock when switching to about
+  const [isAnimating, setIsAnimating] = useState(isAbout); 
   return (
     <>
       <Header />

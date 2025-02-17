@@ -1,4 +1,4 @@
-/* Global Styles */
+
 * {
     margin: 0;
     padding: 0;
@@ -13,8 +13,7 @@
     font-family: "Neue Montreal";
   }
   
-  /* Container Layout */
-  .main-container {
+.main-container {
     position: relative;
     width: 100vw;
     height: 100vh;
@@ -86,7 +85,6 @@
   top: -100%;
 }
 
-/* Navigation Styles */
 .intro-container nav {
   position: fixed;
   width: 100%;
@@ -114,7 +112,6 @@
   opacity: 1;
 }
 
-/* Hero Section */
 .intro-container .hero {
   position: absolute;
   width: 95%;
@@ -156,7 +153,6 @@
   top: 50px;
 }
 
-/* Footer Styles */
 .intro-container footer {
   position: absolute;
   bottom: 0;
@@ -194,7 +190,6 @@
   top: 30px;
 }
 
-/* Slider Styles */
 .slider-container {
   position: absolute;
   top: 0;
@@ -266,7 +261,7 @@
     opacity: 0.3;
   }
 }
-/* Responsive Adjustments */
+
 @media(max-width: 900px) {
   .intro-container .slide-num {
     text-align: left;
