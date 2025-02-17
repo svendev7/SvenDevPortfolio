@@ -141,7 +141,7 @@ const projects = [
           <SiJavascript key="js" size={40} title="JavaScript"  className="tech-icon" />,
           <SiReact key="react" size={40} title="React"  className="tech-icon" />,
         ],
-        visitUrl: "https://grootsdesign.com",
+        visitUrl: "https://next-js-weather-app-e87p.vercel.app",
         completed: "Completed: March 2024"
     },
     {
