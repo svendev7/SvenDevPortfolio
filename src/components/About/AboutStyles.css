@@ -5,6 +5,7 @@
     min-height: calc(100vh - 100px); /* Account for header height */
     padding: 40px 20px;
     background-color: #161616; /* Match main background */
+    font-family: Arial, Helvetica, sans-serif;
   }
   
   .columns-container {

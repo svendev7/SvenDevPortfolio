@@ -91,7 +91,7 @@ const IntroAnimation = ({ onAnimationEnd }) => {
       });
     }, []);
     if (animationFinished) {
-      return <ImageSlider startFullScreen={true} initialImage="/images/1.jpg" />;
+      return <ImageSlider startFullScreen={true} initialImage="/images/FTA.jpg" />;
   }
 
     return (
@@ -121,12 +121,12 @@ const IntroAnimation = ({ onAnimationEnd }) => {
           <div className="col c-3">
             <div className="item"><img src="/images/11.jpg" alt="" /></div>
             <div className="item"><img src="/images/12.jpg" alt="" /></div>
-            <div className="item"><img src="/images/1.jpg" alt="" /></div>
+            <div className="item"><img src="/images/FTA.jpg" alt="" /></div>
             <div className="item"><img src="/images/14.jpg" alt="" /></div>
             <div className="item"><img src="/images/15.jpg" alt="" /></div>
           </div>
           <div className="col c-4">
-            <div className="item"><img src="/images/1.jpg" alt="" /></div>
+            <div className="item"><img src="/images/FTA.jpg" alt="" /></div>
             <div className="item"><img src="/images/2.jpg" alt="" /></div>
             <div className="item"><img src="/images/3.jpg" alt="" /></div>
             <div className="item"><img src="/images/4.jpg" alt="" /></div>

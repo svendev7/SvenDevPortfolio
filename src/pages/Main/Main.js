@@ -33,7 +33,7 @@ const Main = () => {
             transition={{ duration: 0.3 }}
           >
             <ProjectsSlider 
-              startFullScreen={fromIntro} initialImage="/images/1.jpg" 
+              startFullScreen={fromIntro} initialImage="/images/FTA.jpg" 
             />
           </motion.div>
         )}
