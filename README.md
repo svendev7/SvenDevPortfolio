@@ -8,7 +8,7 @@ Run instructions:
 ```
 
 ```bash
-> npm run build *or* yarn build
+> npm run start *or* yarn start
 ```
 
 Used technologies:
