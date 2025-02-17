@@ -1,6 +1,6 @@
  import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
-import ImageSlider from '../ProjectsSlider/ProjectsSlider'; 
+import ProjectsSlider from '../ProjectsSlider/ProjectsSlider'; 
 import './IntroAnimationStyles.css';
 import { useNavigate } from 'react-router-dom';
 const IntroAnimation = ({ onAnimationEnd }) => {
@@ -91,7 +91,7 @@ const IntroAnimation = ({ onAnimationEnd }) => {
       });
     }, []);
     if (animationFinished) {
-      return <ImageSlider startFullScreen={true} initialImage="/images/FTA.jpg" />;
+      return <ProjectsSlider startFullScreen={true} initialImage="/images/FTA.jpg"  />;
   }
 
     return (

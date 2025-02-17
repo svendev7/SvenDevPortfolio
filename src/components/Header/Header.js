@@ -48,7 +48,7 @@ const Header = ({ isFullScreen }) => {
     window.dispatchEvent(new CustomEvent("language-changed"));
   };
 
-  return (// make header sticky
+  return (
     <header className={`header ${isFullScreen ? 'fullscreen' : ''}`}>
       <div
         className="profile-section"

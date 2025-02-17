@@ -141,15 +141,13 @@ const projects = [
     },
       
   ];
-const ProjectsSlider = ({ startFullScreen = false, initialProjectIndex = null  }) => {
+const ProjectsSlider = ({ startFullScreen = false,  initialImage = null  }) => {
     const trackRef = useRef(null);
     const scrollbarRef = useRef(null);
     const initialLoadRef = useRef(true);
     const [isScrollVisible, setIsScrollVisible] = useState(true);
     const [isFullScreen, setIsFullScreen] = useState(startFullScreen);
-    const [selectedProject, setSelectedProject] = useState(
-        initialProjectIndex !== null ? projects[initialProjectIndex] : null
-      );
+    const [selectedProject, setSelectedProject] = useState(null)
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [opacityDelayed, setOpacityDelayed] = useState(true);
     const [isDragging, setIsDragging] = useState(false);
@@ -221,16 +219,7 @@ const ProjectsSlider = ({ startFullScreen = false, initialProjectIndex = null  }
             }
         }
     }, [startFullScreen]);
-    useEffect(() => {
-        if (!isFullScreen) {
-            const timer = setTimeout(() => {
-                setOpacityDelayed(false);
-            }, 1000);
-            return () => clearTimeout(timer);
-        } else {
-            setOpacityDelayed(true);
-        }
-    }, [isFullScreen]);
+
 
     const updateTrackPosition = (percentage) => {
         const track = trackRef.current;
@@ -261,14 +250,7 @@ const ProjectsSlider = ({ startFullScreen = false, initialProjectIndex = null  }
             );
         });
     };
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         if (imageRefs.current[0]) {
-    //             // Trigger click on the first image after a slight delay
-    //             imageRefs.current[0].click();
-    //         }
-    //     }, -200); // Adjust the delay as needed
-    // }, []);
+    
     
     useEffect(() => {
         const track = trackRef.current;
@@ -437,35 +419,34 @@ const ProjectsSlider = ({ startFullScreen = false, initialProjectIndex = null  }
     
    
     useEffect(() => {
-        if (initialLoadRef.current && startFullScreen && initialProjectIndex !== null) {
-          const project = projects[initialProjectIndex];
-          const imgElement = imageRefs.current[initialProjectIndex];
-          if (imgElement) {
-                const rect = imgElement.getBoundingClientRect();
-                const computedStyle = window.getComputedStyle(imgElement);
-                const objectPosition = computedStyle.objectPosition;
+        if (initialLoadRef.current && startFullScreen) {
+            // Set fullscreen state immediately
+            setIsFullScreen(true);
+            setSelectedProject(projects[0]);
 
-                // Simulate the initial click transition
-                setImageTransitionState({
-                    rect: {
-                        top: rect.top,
-                        left: rect.left,
-                        width: rect.width,
-                        height: rect.height
-                    },
-                    objectPosition,
-                    scale: 1
-                });
-
-                setSelectedProject(project);
-                setSelectedIndex(initialProjectIndex);
-                setIsFullScreen(true);
-            }
-            
-            // Prevent this from running again
-            initialLoadRef.current = false;
+            // Use a timeout to ensure DOM elements are rendered
+            setTimeout(() => {
+                const imgElement = imageRefs.current[0];
+                if (imgElement) {
+                    const rect = imgElement.getBoundingClientRect();
+                    const computedStyle = window.getComputedStyle(imgElement);
+                    
+                    // Capture the actual position from DOM
+                    setImageTransitionState({
+                        rect: {
+                            top: rect.top,
+                            left: rect.left,
+                            width: rect.width,
+                            height: rect.height
+                        },
+                        objectPosition: computedStyle.objectPosition,
+                        scale: 1
+                    });
+                }
+                initialLoadRef.current = false;
+            }, 50); // Short delay to allow DOM rendering
         }
-    }, [startFullScreen, initialProjectIndex]);
+    }, [startFullScreen, projects]);
     return (
         <LayoutGroup>
             <AnimatePresence>

@@ -43,16 +43,16 @@ const About = ({ setIsAnimating }) => {
     <div className="about-container">
       <div className="columns-container">
         <div className="column">
-          <Box title="About" subtitle="Ehm dus ja ik vind coderen leuk bla bla bla bla bla" width={270} height={550} delay={0.1} onAnimationComplete={() => setAnimationsComplete((prev) => prev + 1)} />
-          <Box title="Links" subtitle="Github linked in leetcode email type shit" width={270} height={150} delay={1.1} onAnimationComplete={() => setAnimationsComplete((prev) => prev + 1)} />
+          <Box title="About" subtitle="ik vind coderen leuk bla bla bla bla bla" width={270} height={550} delay={0.1} onAnimationComplete={() => setAnimationsComplete((prev) => prev + 1)} />
+          <Box title="Links" subtitle="Github linkedin email etc" width={270} height={150} delay={1.1} onAnimationComplete={() => setAnimationsComplete((prev) => prev + 1)} />
         </div>
         <div className="column">
           <Box title="Education" subtitle="HBO-ICT 3/4 Jaar" width={270} height={150} delay={0.45} onAnimationComplete={() => setAnimationsComplete((prev) => prev + 1)} />
-          <Box title="Experience" subtitle="Appie 2 jaar (relevant? idk) thuisbezorgd 1.5 jaar, 6 maanden stage Kadaster" width={270} height={550} delay={0.65} onAnimationComplete={() => setAnimationsComplete((prev) => prev + 1)} />
+          <Box title="Experience" subtitle="Appie 2 jaar thuisbezorgd 1.5 jaar, 6 maanden stage Kadaster bla bla bla" width={270} height={550} delay={0.65} onAnimationComplete={() => setAnimationsComplete((prev) => prev + 1)} />
         </div>
         <div className="column">
-          <Box title="Technologies" subtitle="Javascript typescripts type shit" width={270} height={550} delay={0.3} onAnimationComplete={() => setAnimationsComplete((prev) => prev + 1)} />
-          <Box title="Hobbys" subtitle="Games maken, Karten, Sportschool (ik bench 110kg jonguh)" width={270} height={150} delay={0.85} onAnimationComplete={() => setAnimationsComplete((prev) => prev + 1)} />
+          <Box title="Technologies" subtitle="Javascript typescript bla bla bla" width={270} height={550} delay={0.3} onAnimationComplete={() => setAnimationsComplete((prev) => prev + 1)} />
+          <Box title="Hobbys" subtitle="Ik bench 110kg >:)" width={270} height={150} delay={0.85} onAnimationComplete={() => setAnimationsComplete((prev) => prev + 1)} />
         </div>
       </div>
     </div>
