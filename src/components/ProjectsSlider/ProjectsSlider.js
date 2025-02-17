@@ -155,7 +155,6 @@ const ProjectsSlider = ({ startFullScreen = false,  initialImage = null  }) => {
     const scrollbarThumbRef = useRef(null);
     const [isExiting, setIsExiting] = useState(false);
     const imageRefs = useRef([]);
-    
     const [showBackButton, setShowBackButton] = useState(true);
     const fullscreenRef = useRef(null);
     const [imageTransitionState, setImageTransitionState] = useState({
@@ -203,14 +202,12 @@ const ProjectsSlider = ({ startFullScreen = false,  initialImage = null  }) => {
         };
     });
 
-    // Add effect to save scroll position
     useEffect(() => {
         if (!startFullScreen && !isFullScreen) {
             sessionStorage.setItem('projectsScrollPercentage', sliderState.percentage);
         }
     }, [sliderState.percentage, startFullScreen, isFullScreen]);
 
-    // Add effect to restore scroll position on mount
     useEffect(() => {
         if (!startFullScreen && trackRef.current) {
             const savedPercentage = sessionStorage.getItem('projectsScrollPercentage');
@@ -376,20 +373,12 @@ const ProjectsSlider = ({ startFullScreen = false,  initialImage = null  }) => {
 
     const handleImageClick = (e, project, index) => {
         if (isDragging) return;
-        
-        // // If already in full screen and clicking the same image, close it
-        // if (isFullScreen && selectedImage === src) {
-        //     setIsTextExpanded(!isTextExpanded);
-        //     handleFullScreenClose();
-        //     return;
-        // }
         setIsScrollVisible(true);
         const imgElement = e.target;
         const rect = imgElement.getBoundingClientRect();
         const computedStyle = window.getComputedStyle(imgElement);
         const objectPosition = computedStyle.objectPosition;
     
-        // Set image transition state immediately
         setImageTransitionState({
             rect: {
                 top: rect.top,
@@ -400,8 +389,7 @@ const ProjectsSlider = ({ startFullScreen = false,  initialImage = null  }) => {
             objectPosition,
             scale: 1
         });
-    
-        // Set full screen state
+
         setSelectedProject(project);
         setSelectedIndex(index);
         setIsFullScreen(true);
@@ -420,18 +408,16 @@ const ProjectsSlider = ({ startFullScreen = false,  initialImage = null  }) => {
    
     useEffect(() => {
         if (initialLoadRef.current && startFullScreen) {
-            // Set fullscreen state immediately
+
             setIsFullScreen(true);
             setSelectedProject(projects[0]);
 
-            // Use a timeout to ensure DOM elements are rendered
             setTimeout(() => {
                 const imgElement = imageRefs.current[0];
                 if (imgElement) {
                     const rect = imgElement.getBoundingClientRect();
                     const computedStyle = window.getComputedStyle(imgElement);
                     
-                    // Capture the actual position from DOM
                     setImageTransitionState({
                         rect: {
                             top: rect.top,
@@ -444,7 +430,7 @@ const ProjectsSlider = ({ startFullScreen = false,  initialImage = null  }) => {
                     });
                 }
                 initialLoadRef.current = false;
-            }, 50); // Short delay to allow DOM rendering
+            }, 50); 
         }
     }, [startFullScreen, projects]);
     return (
@@ -560,7 +546,6 @@ const ProjectsSlider = ({ startFullScreen = false,  initialImage = null  }) => {
       className="custom-scrollbar"
       onScroll={handleFullscreenScroll}
     >
-      {/* Fullscreen image (restored to your original approach) */}
       <motion.img
         src={selectedProject.sliderImage}
         style={{
@@ -574,8 +559,6 @@ const ProjectsSlider = ({ startFullScreen = false,  initialImage = null  }) => {
         }}
         alt="Full screen view"
       />
-
-      {/* Details Panel Below the Image */}
       <motion.div
         className="project-details"
         initial={{ opacity: 0, x: 50}}
@@ -584,7 +567,6 @@ const ProjectsSlider = ({ startFullScreen = false,  initialImage = null  }) => {
         viewport={{ once: true, amount: 1 }}
         transition={{ delay: 0.8, duration: 0.8 }}
       >
-        {/* Left Column: Project image and Tech Icons */}
         <motion.div
           className="left-column"
           initial={{ opacity: 0, x: -50 }}
@@ -613,8 +595,6 @@ const ProjectsSlider = ({ startFullScreen = false,  initialImage = null  }) => {
             ))}
           </div>
         </motion.div>
-
-        {/* Right Column: Text Content */}
         <motion.div
           className="right-column"
           initial={{ opacity: 0, x: 50 }}
