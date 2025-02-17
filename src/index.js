@@ -3,9 +3,10 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Main from "./pages/Main/Main";
 import Intro from "./pages/intro/intro";
-
+import { LanguageProvider } from "./LanguageContext";
 const App = () => {
     return (
+        <LanguageProvider>
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Intro />} />
@@ -13,6 +14,7 @@ const App = () => {
                 <Route path="/projects" element={<Main />} />
             </Routes>
         </BrowserRouter>
+        </LanguageProvider>
     );
 };
 

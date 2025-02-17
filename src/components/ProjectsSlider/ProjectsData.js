@@ -4,8 +4,14 @@ const projects = [
     {
       sliderImage: "/images/FTA.jpg",
       projectImage: "/images/GrootsDesignGif.mp4",
-      title: "Groots Design",
-      description: "Detailed info about Project Grootsdesign goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      title: {
+        nl: "Groots Design",
+        en: "Groots Design"
+        },
+        description: {
+            nl: "Gedetailleerde informatie over Project Grootsdesign...",
+            en: "Detailed info about Project Grootsdesign..."
+        },
       techIcons: [
         <SiTypescript key="ts" size={40} title="TypeScript" className="tech-icon" />,
         <SiJavascript key="js" size={40} title="JavaScript"  className="tech-icon" />,
@@ -13,13 +19,22 @@ const projects = [
         <SiNextdotjs key="next" size={40} title="Next.js"  className="tech-icon" />,
       ],
       visitUrl: "https://github.com/FTA",
-      completed: "Completed: January 2024"
+      completed: {
+        nl: "Voltooid: Januari 2024",
+        en: "Completed: January 2024"
+    }
     },
     {
       sliderImage: "/images/GrootsDesign.jpg",
       projectImage: "/images/ipass2.mp4",
-      title: "Farming The Apocalypse",
-      description: "Description for fta project goes here. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      title: {
+        nl: "Groots Design",
+        en: "Groots Design"
+        },
+        description: {
+            nl: "Gedetailleerde informatie over Project Grootsdesign...",
+            en: "Detailed info about Project Grootsdesign..."
+        },
       techIcons: [
         <SiJavascript key="js" size={40} title="JavaScript"  className="tech-icon" />,
         <SiReact key="react" size={40} title="React"  className="tech-icon" />,
@@ -30,8 +45,14 @@ const projects = [
     {
         sliderImage: "/images/Remembr.jpg",
         projectImage: "/images/RemembrGif.mp4",
-        title: "Remembr",
-        description: "Description for Remembr project goes here. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        title: {
+            nl: "Groots Design",
+            en: "Groots Design"
+            },
+            description: {
+                nl: "Gedetailleerde informatie over Project Grootsdesign...",
+                en: "Detailed info about Project Grootsdesign..."
+            },
         techIcons: [
           <SiJavascript key="js" size={40} title="JavaScript" className="tech-icon" />,
           <SiReact key="react" size={40} title="React"  className="tech-icon" />,
@@ -42,8 +63,14 @@ const projects = [
     {
         sliderImage: "/images/ipass.jpg",
         projectImage: "/images/ipass2.jpg",
-        title: "Individual propedeuse assessment",
-        description: "Description for IPASS project goes here. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        title: {
+            nl: "Groots Design",
+            en: "Groots Design"
+            },
+            description: {
+                nl: "Gedetailleerde informatie over Project Grootsdesign...",
+                en: "Detailed info about Project Grootsdesign..."
+            },
         techIcons: [
           <SiJavascript key="js" size={40} title="JavaScript"  className="tech-icon" />,
           <SiReact key="react" size={40} title="React"  className="tech-icon" />,
@@ -66,8 +93,14 @@ const projects = [
     {
         sliderImage: "/images/Blackjack.jpg",
         projectImage: "/images/Blackjack.jpg",
-        title: "Groots Design",
-        description: "Description for Groots Design project goes here. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        title: {
+            nl: "Groots Design",
+            en: "Groots Design"
+            },
+            description: {
+                nl: "Gedetailleerde informatie over Project Grootsdesign...",
+                en: "Detailed info about Project Grootsdesign..."
+            },
         techIcons: [
           <SiJavascript key="js" size={40} title="JavaScript"  className="tech-icon" />,
           <SiReact key="react" size={40} title="React"  className="tech-icon" />,
@@ -78,8 +111,14 @@ const projects = [
     {
         sliderImage: "/images/KPN.jpg",
         projectImage: "/images/KPN.jpg",
-        title: "Groots Design",
-        description: "Description for Groots Design project goes here. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        title: {
+            nl: "Groots Design",
+            en: "Groots Design"
+            },
+            description: {
+                nl: "Gedetailleerde informatie over Project Grootsdesign...",
+                en: "Detailed info about Project Grootsdesign..."
+            },
         techIcons: [
           <SiJavascript key="js" size={40} title="JavaScript"  className="tech-icon" />,
           <SiReact key="react" size={40} title="React"  className="tech-icon" />,
@@ -90,8 +129,14 @@ const projects = [
     {
         sliderImage: "/images/WeatherApp.jpg",
         projectImage: "/images/WeatherApp.jpg",
-        title: "Groots Design",
-        description: "Description for Groots Design project goes here. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        title: {
+            nl: "Groots Design",
+            en: "Groots Design"
+            },
+            description: {
+                nl: "Gedetailleerde informatie over Project Grootsdesign...",
+                en: "Detailed info about Project Grootsdesign..."
+            },
         techIcons: [
           <SiJavascript key="js" size={40} title="JavaScript"  className="tech-icon" />,
           <SiReact key="react" size={40} title="React"  className="tech-icon" />,
@@ -102,8 +147,14 @@ const projects = [
     {
         sliderImage: "/images/ComingSoon.jpg",
         projectImage: "/images/GrootsDesign_project.jpg",
-        title: "Groots Design",
-        description: "Description for Groots Design project goes here. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        title: {
+            nl: "Groots Design",
+            en: "Groots Design"
+            },
+            description: {
+                nl: "Gedetailleerde informatie over Project Grootsdesign...",
+                en: "Detailed info about Project Grootsdesign..."
+            },
         techIcons: [
           <SiJavascript key="js" size={40} title="JavaScript"  className="tech-icon" />,
           <SiReact key="react" size={40} title="React"  className="tech-icon" />,
@@ -114,8 +165,14 @@ const projects = [
     {
         sliderImage: "/images/ComingSoon.jpg",
         projectImage: "/images/GrootsDesign_project.jpg",
-        title: "Groots Design",
-        description: "Description for Groots Design project goes here. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        title: {
+            nl: "Groots Design",
+            en: "Groots Design"
+            },
+            description: {
+                nl: "Gedetailleerde informatie over Project Grootsdesign...",
+                en: "Detailed info about Project Grootsdesign..."
+            },
         techIcons: [
           <SiJavascript key="js" size={40} title="JavaScript"  className="tech-icon" />,
           <SiReact key="react" size={40} title="React" className="tech-icon" />,
@@ -126,8 +183,14 @@ const projects = [
     {
         sliderImage: "/images/ComingSoon.jpg",
         projectImage: "/images/GrootsDesign_project.jpg",
-        title: "Groots Design",
-        description: "Description for Groots Design project goes here. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        title: {
+            nl: "Groots Design",
+            en: "Groots Design"
+            },
+            description: {
+                nl: "Gedetailleerde informatie over Project Grootsdesign...",
+                en: "Detailed info about Project Grootsdesign..."
+            },
         techIcons: [
           <SiJavascript key="js" size={40} title="JavaScript"  className="tech-icon" />,
           <SiReact key="react" size={40} title="React"  className="tech-icon" />,

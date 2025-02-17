@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { motion } from "framer-motion";
 import "./AboutStyles.css";
-
+import { LanguageContext } from "../../LanguageContext";
 const boxVariants = {
   hidden: { opacity: 0, y: 500 },
   visible: (delay) => ({
@@ -32,7 +32,7 @@ const Box = ({ title, subtitle, width, height, delay, onAnimationComplete }) => 
 const About = ({ setIsAnimating }) => {
   const [animationsComplete, setAnimationsComplete] = useState(0);
   const totalBoxes = 6; 
-
+  const { language } = useContext(LanguageContext);
   useEffect(() => {
     if (animationsComplete === totalBoxes) {
       setIsAnimating(false); 
@@ -43,16 +43,33 @@ const About = ({ setIsAnimating }) => {
     <div className="about-container">
       <div className="columns-container">
         <div className="column">
-          <Box title="About" subtitle="ik vind coderen leuk bla bla bla bla bla" width={270} height={550} delay={0.1} onAnimationComplete={() => setAnimationsComplete((prev) => prev + 1)} />
-          <Box title="Links" subtitle="Github linkedin email etc" width={270} height={150} delay={1.1} onAnimationComplete={() => setAnimationsComplete((prev) => prev + 1)} />
+          <Box 
+          title={language === 'nl' ? 'Over' : 'About'}
+          subtitle={language === 'nl' ? 'Ik vind coderen leuk' : 'I really like coding'}
+          width={270} height={550} delay={0.1} onAnimationComplete={() => setAnimationsComplete((prev) => prev + 1)} />
+          <Box 
+          title="Links" 
+          subtitle="Github linkedin email etc" 
+          width={270} height={150} delay={1.1} onAnimationComplete={() => setAnimationsComplete((prev) => prev + 1)} />
         </div>
         <div className="column">
-          <Box title="Education" subtitle="HBO-ICT 3/4 Jaar" width={270} height={150} delay={0.45} onAnimationComplete={() => setAnimationsComplete((prev) => prev + 1)} />
-          <Box title="Experience" subtitle="Appie 2 jaar thuisbezorgd 1.5 jaar, 6 maanden stage Kadaster bla bla bla" width={270} height={550} delay={0.65} onAnimationComplete={() => setAnimationsComplete((prev) => prev + 1)} />
+          <Box 
+          title={language === 'nl' ? 'Opleiding' : 'Education'}
+          subtitle="HBO-ICT 3/4 Jaar" 
+          width={270} height={150} delay={0.45} onAnimationComplete={() => setAnimationsComplete((prev) => prev + 1)} />
+          <Box 
+          title={language === 'nl' ? 'Ervaring' : 'Experience'}
+          ubtitle="Appie 2 jaar thuisbezorgd 1.5 jaar, 6 maanden stage Kadaster bla bla bla" width={270} height={550} delay={0.65} onAnimationComplete={() => setAnimationsComplete((prev) => prev + 1)} />
         </div>
         <div className="column">
-          <Box title="Technologies" subtitle="Javascript typescript bla bla bla" width={270} height={550} delay={0.3} onAnimationComplete={() => setAnimationsComplete((prev) => prev + 1)} />
-          <Box title="Hobbys" subtitle="Ik bench 110kg >:)" width={270} height={150} delay={0.85} onAnimationComplete={() => setAnimationsComplete((prev) => prev + 1)} />
+          <Box 
+          title={language === 'nl' ? 'Technologiëen' : 'Technologies'}
+          subtitle="Javascript typescript bla bla bla" 
+          width={270} height={550} delay={0.3} onAnimationComplete={() => setAnimationsComplete((prev) => prev + 1)} />
+          <Box 
+          title={language === 'nl' ? 'Hobbies' : 'Hobbys'}
+          subtitle="Ik bench 110kg >:)" 
+          width={270} height={150} delay={0.85} onAnimationComplete={() => setAnimationsComplete((prev) => prev + 1)} />
         </div>
       </div>
     </div>

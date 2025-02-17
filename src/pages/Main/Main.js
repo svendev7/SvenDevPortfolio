@@ -10,6 +10,9 @@ const Main = () => {
   const isAbout = location.pathname === "/about";
   const fromIntro = location.state?.fromIntro || false;
   const [isAnimating, setIsAnimating] = useState(isAbout); 
+  const [showProjects, setShowProjects] = useState(false);
+
+  
   return (
     <>
       <Header />

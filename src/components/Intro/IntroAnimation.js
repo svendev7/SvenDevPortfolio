@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const IntroAnimation = ({ onAnimationEnd }) => {
     const containerRef = useRef(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [animationFinished, setAnimationFinished] = useState(false);  // New state to track animation end
+    const [animationFinished, setAnimationFinished] = useState(false);  
     const navigate = useNavigate();
     useEffect(() => {
         const preloadImages = () => {

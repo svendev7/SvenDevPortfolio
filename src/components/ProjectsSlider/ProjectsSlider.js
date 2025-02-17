@@ -1,10 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useContext } from 'react';
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import './ProjectsSliderStyles.css';
-import { ArrowRight, ArrowLeft, Code, Zap, Monitor, Layout } from 'lucide-react';
+import { ArrowRight, ArrowLeft, ArrowDown, Code, Zap, Monitor, Layout } from 'lucide-react';
 import { SiTypescript, SiJavascript, SiReact, SiNextdotjs, SiGithub } from 'react-icons/si';
 import projects from './ProjectsData';
+import { LanguageContext } from '../../LanguageContext';
 const ProjectsSlider = ({ startFullScreen = false,  initialImage = null  }) => {
+    const { language } = useContext(LanguageContext);
     const trackRef = useRef(null);
     const scrollbarRef = useRef(null);
     const initialLoadRef = useRef(true);
@@ -13,6 +15,7 @@ const ProjectsSlider = ({ startFullScreen = false,  initialImage = null  }) => {
     const [selectedProject, setSelectedProject] = useState(null)
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [opacityDelayed, setOpacityDelayed] = useState(true);
+    const [showScrollIndicator, setShowScrollIndicator] = useState(true);
     const [isDragging, setIsDragging] = useState(false);
     const [isDraggingScrollbar, setIsDraggingScrollbar] = useState(false);
     const scrollbarThumbRef = useRef(null);
@@ -33,6 +36,7 @@ const ProjectsSlider = ({ startFullScreen = false,  initialImage = null  }) => {
     const handleFullscreenScroll = (e) => {
         const scrollTop = e.target.scrollTop;
         setShowBackButton(scrollTop === 0);
+        setShowScrollIndicator(scrollTop === 0);
     };
 
     useEffect(() => {
@@ -267,8 +271,13 @@ const ProjectsSlider = ({ startFullScreen = false,  initialImage = null  }) => {
             rect: null
         }));
     };
+    const handleScrollDown = () => {
+        fullscreenRef.current?.scrollTo({
+            top: 1599, 
+            behavior: 'smooth'
+        });
+    };
     
-   
     useEffect(() => {
         if (initialLoadRef.current && startFullScreen) {
 
@@ -309,10 +318,51 @@ const ProjectsSlider = ({ startFullScreen = false,  initialImage = null  }) => {
                 onClick={handleFullScreenClose}
             >
                 <ArrowLeft size={24} />
-                Back
+                {language === 'nl' ? 'Terug' : 'Back'}
             </motion.div>
             )}
         </AnimatePresence>
+        <AnimatePresence>
+  {showScrollIndicator && isFullScreen && (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 20 }}
+      transition={{ duration: 0.3 }}
+      style={{
+        position: 'fixed',
+        bottom: '40px',
+        left: '50%',
+        transform: 'translateX(-80%)',
+        zIndex: 300,
+        cursor: 'pointer'
+      }}
+      onClick={handleScrollDown}
+    >
+      <motion.div
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9, y: 5 }}
+        animate={{
+          y: [0, -15, 0],
+          opacity: [0.8, 1, 0.8]
+        }}
+        transition={{
+          duration: 1.5,
+          repeat: Infinity,
+          ease: 'easeInOut'
+        }}
+      >
+        <ArrowDown
+          size={32}
+          color="#757575"
+          style={{
+            filter: 'drop-shadow(0 2px 4px white)'
+          }}
+        />
+      </motion.div>
+    </motion.div>
+  )}
+</AnimatePresence>
             <div 
                 id="image-track" 
                 ref={trackRef} 
@@ -439,19 +489,19 @@ const ProjectsSlider = ({ startFullScreen = false,  initialImage = null  }) => {
         >
           <img
             src={selectedProject.projectImage}
-            alt={selectedProject.title}
+            alt={selectedProject.title[language]}
             className="project-image"
           />
           <div className="tech-icons">
-          <div className="made-with-text">Made with:</div>
+          <div className="made-with-text">{language === 'nl' ? 'Gemaakt met:' : 'Made with:'}</div>
             {selectedProject.techIcons.map((icon, idx) => (
               <motion.span 
                 key={idx} 
                 className="tech-icon-wrapper"
-                initial={{ opacity: 0, y: 50 }}
+                initial={{ opacity: 0, y: 25 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.8 }}
+                transition={{ duration: 0.4, delay: 0.6 }}
               >
                 {icon}
               </motion.span>
@@ -465,8 +515,8 @@ const ProjectsSlider = ({ startFullScreen = false,  initialImage = null  }) => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2>{selectedProject.title}</h2>
-          <p>{selectedProject.description}</p>
+          <h2>{selectedProject.title[language]}</h2>
+          <p>{selectedProject.description[language]}</p>
           <div className="info-footer">
           <motion.div
             className="visit-section"
@@ -480,7 +530,7 @@ const ProjectsSlider = ({ startFullScreen = false,  initialImage = null  }) => {
             rel="noopener noreferrer"
             className="visit-button nav-button"
             >
-            <span>Visit</span>
+            {language === 'nl' ? 'Bekijken' : 'Visit'}
             <SiGithub key="github" size={20} title="Visit"  className="tech-icon" />
             </a>
             </motion.div>
@@ -490,7 +540,7 @@ const ProjectsSlider = ({ startFullScreen = false,  initialImage = null  }) => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1.2, delay: 0.8 }}
                     >
-                <span>{selectedProject.completed}</span>
+                <span>{selectedProject.completed[language]}</span>
                 </motion.div>
             </div>
         </motion.div>

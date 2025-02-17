@@ -1,25 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Github, Mail, Linkedin } from "lucide-react";
 import "./HeaderStyles.css";
-
+import { LanguageContext } from "../../LanguageContext";
 const LanguageText = ({ children, lang }) => {
-  const [currentLanguage, setCurrentLanguage] = useState(
-    localStorage.getItem("language") || "nl"
-  );
-
-  useEffect(() => {
-    const handleLanguageChange = () => {
-      setCurrentLanguage(localStorage.getItem("language") || "en");
-    };
-    window.addEventListener("language-changed", handleLanguageChange);
-    return () => {
-      window.removeEventListener("language-changed", handleLanguageChange);
-    };
-  }, []);
-
-  return currentLanguage === lang ? <>{children}</> : null;
+  const { language } = useContext(LanguageContext); 
+  return language === lang ? <>{children}</> : null;
 };
+
+
 
 const Header = ({ isFullScreen }) => {
   const navigate = useNavigate();
@@ -27,26 +16,7 @@ const Header = ({ isFullScreen }) => {
   const isAboutPage = location.pathname === "/about";
   const isProjectsPage = location.pathname === "/projects";
   const [isHovered, setIsHovered] = useState(false);
-  const [currentLanguage, setCurrentLanguage] = useState(
-    localStorage.getItem("language") || "nl"
-  );
-
-  useEffect(() => {
-    const handleLanguageChange = () => {
-      setCurrentLanguage(localStorage.getItem("language") || "nl");
-    };
-    window.addEventListener("language-changed", handleLanguageChange);
-    return () => {
-      window.removeEventListener("language-changed", handleLanguageChange);
-    };
-  }, []);
-
-  const setLanguage = (lang) => {
-    if (currentLanguage === lang) return;
-    localStorage.setItem("language", lang);
-    setCurrentLanguage(lang);
-    window.dispatchEvent(new CustomEvent("language-changed"));
-  };
+  const { language, setLanguage } = useContext(LanguageContext);
 
   return (
     <header className={`header ${isFullScreen ? 'fullscreen' : ''}`}>
@@ -109,17 +79,17 @@ const Header = ({ isFullScreen }) => {
       <div className="language-switcher">
         <div
           className="language-slider"
-          style={{ transform: `translateX(${currentLanguage === "nl" ? "100%" : "0"})` }}
+          style={{ transform: `translateX(${language === "nl" ? "100%" : "0"})` }}
         ></div>
         <button
-          className={`flag-button ${currentLanguage === "en" ? "active" : ""}`}
+          className={`flag-button ${language === "en" ? "active" : ""}`}
           onClick={() => setLanguage("en")}
         >
           <span className="flag flag-en"></span>
           <span>EN</span>
         </button>
         <button
-          className={`flag-button ${currentLanguage === "nl" ? "active" : ""}`}
+          className={`flag-button ${language === "nl" ? "active" : ""}`}
           onClick={() => setLanguage("nl")}
         >
           <span className="flag flag-nl"></span>
