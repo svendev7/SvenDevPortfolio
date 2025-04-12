@@ -1,10 +1,4 @@
-TODO:
-Back should be Projects, All header texts and down arrow button should be much more readable
-Mobile version
-Resizing of components for smaller screens
-Accessibility??
-Maybe fix animation bug between intro and projecs
-fill in project descripts and about
+Old portfolio
 # SvenDevPortfolio
 The code for my portfolio website, showing off all my school and personal projects that i've developed/worked on.
 
